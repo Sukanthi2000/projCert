@@ -1,0 +1,14 @@
+- hosts: test
+  become: yes
+  tasks:
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+        update_cache: yes
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: true
+        state: started
+
