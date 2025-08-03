@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get clean
 
 # Remove Apache's default index.html
-RUN rm -f /var/www/html/index.htm
+RUN rm -f /var/www/html/index.html
 
 # Copy your app (including index.php) to Apache root
 COPY . /var/www/html/
