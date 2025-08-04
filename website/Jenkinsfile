@@ -1,0 +1,41 @@
+pipeline {
+    agent { label 'slave' }
+     triggers {
+        githubPush() // 🔥 Enables GitHub webhook trigger
+    }
+    stages {
+        stage('Job 1: Install Docker via Ansible') {
+            steps {
+                script {
+                    echo 'Triggering Job 1 - install-docker'
+                    build job: 'install-docker'
+                }
+            }
+        }
+
+        stage('Job 2: Build & Deploy PHP Docker Container') {
+            steps {
+                script {
+                    echo 'Triggering Job 2 - build-and-deploy'
+                    try {
+                        build job: 'build-and-deploy'
+                    } catch (Exception e) {
+                        echo "⚠️ Job 2 failed: ${e.getMessage()}"
+                        echo "Triggering Job 3 - cleanup-docker-container"
+                        build job: 'cleanup-docker-container', propagate: false
+                        error("❌ Stopping pipeline because Job  2 failed.")
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completed successfully."
+        }
+        failure {
+            echo "❌ Pipeline failed."
+        }
+    }
+}
