@@ -13,7 +13,7 @@ function config($key = '')
             '' => 'Home',
             'content/about-us.php' => 'About Us',
             'content/products.php' => 'Products',
-            'content/contact.php' => 'Contacts',
+            'content/contact.php' => 'Contact',
         ],
         'template_path' => 'template',
         'content_path' => 'content',
